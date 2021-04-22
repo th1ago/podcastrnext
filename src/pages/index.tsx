@@ -1,8 +1,10 @@
 import { format, parseISO } from 'date-fns';
 import { GetStaticProps } from 'next';
+import Image from 'next/image'
 import ptBR from 'date-fns/locale/pt-BR'
 import { api } from '../services/api';
 import { convertDurationToTimeString } from '../utils/convertDurationToTimeString';
+import styles from './home.module.scss';
 
 type Episode = {
   id: string;
@@ -17,12 +19,47 @@ type Episode = {
 }
 
 type HomeProps = {
-  episodes: Episode[];
+  latestEpisodes: Episode[];
+  allEpisodes: Episode[],
 }
 
-export default function Home(props: HomeProps) {
+export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
   return (
-      <h1>Index</h1>
+    <div className={styles.homepage}>
+      <section className={styles.latestEpisodes}>
+        <h2>Ultimos episodeos</h2>
+        <ul>
+          {latestEpisodes.map(episode => {
+            return(
+              <li key={episode.id}>
+                <Image 
+                  width={192} 
+                  height={192} 
+                  src={episode.thumbnail} 
+                  alt={episode.title}
+                  objectFit="cover"
+                />
+
+                <div className={styles.episodeDetail}>
+                  <a href="">{episode.title}</a>
+                  <p>{episode.members}</p>
+                  <span>{episode.published_at}</span>
+                  <span>{episode.durationAsString}</span>
+                </div>
+
+                <button type="button">
+                  <img src="/play-green.svg" alt="tocar ep"/>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+
+      <section className={styles.allEpisodes}>
+        
+      </section>
+    </div>
   )
 }
 
@@ -52,10 +89,15 @@ export const getStaticProps: GetStaticProps = async () => {
     };
   })
 
+  const latestEpisodes = episodes.slice(0, 2)
+  const allEpisodes = episodes.slice(2, episodes.lenght)
+
   return {
     props: {
-      episodes: data,
+      latestEpisodes,
+      allEpisodes,
     },
-    revalidade: 60 * 60 * 8,
+    // somente executado quando estiver em producao
+    // revalidade: 60 * 60 * 8,
   };
 }
