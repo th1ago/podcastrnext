@@ -7,23 +7,24 @@ import 'rc-slider/assets/index.css';
 import styles from './styles.module.scss';
 
 export default function Player() {
-    const aufioRef = useRef<HTMLAudioElement>(null)
+    const audioRef = useRef<HTMLAudioElement>(null)
     
     const {
         episodeList, 
         currentEpisodeIndex, 
         isPlaying, 
-        tooglePlay} = useContext(PlayerContext)
+        tooglePlay,
+        setPlayingState} = useContext(PlayerContext)
 
     useEffect(() => {
-        if(!aufioRef.current) {
+        if(!audioRef.current) {
             return;
         }
 
         if(isPlaying) {
-            aufioRef.current.play()
+            audioRef.current.play()
         } else {
-            aufioRef.current.pause()
+            audioRef.current.pause()
         }
 
     }, [isPlaying])
@@ -75,8 +76,10 @@ export default function Player() {
                 { episode && (
                     <audio 
                         src={episode.url}
-                        ref={aufioRef}
+                        ref={audioRef}
                         autoPlay
+                        onPlay={() => setPlayingState(true)}
+                        onPause={() => setPlayingState(false)}
                     />
                 )}
 
