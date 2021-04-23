@@ -11,7 +11,9 @@ type Episode = {
 type PlayerContextData = {
     episodeList: Episode[];
     currentEpisodeIndex: number;
+    isPlaying: boolean;
     play: (episode: Episode) => void;
+    tooglePlay : () => void;
 }
 
 // uma forma de passar dados entre os componentes sem utilizar o props
