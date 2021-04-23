@@ -14,9 +14,11 @@ type PlayerContextData = {
     currentEpisodeIndex: number;
     isPlaying: boolean;
     play: (episode: Episode) => void;
+    playNext: () => void;
+    playPrevious: () => void;
     setPlayingState: (state: boolean) => void;
     playList: (list: Episode[], index: number) => void;
-    tooglePlay : () => void;
+    tooglePlay: () => void;
 }
 
 // uma forma de passar dados entre os componentes sem utilizar o props
@@ -51,10 +53,26 @@ export function PlayerContextProvider({children}: PlayerContextProvider) {
     setIsPlaying(state)
   }
 
+  function playNext() {
+    const nextEpisodeIndex = currentEpisodeIndex + 1;
+    
+    if (nextEpisodeIndex < episodeList.length) {
+      setCurrentEpisodeIndex(currentEpisodeIndex + 1)  
+    }
+  }
+
+  function playPrevious() {
+    if (currentEpisodeIndex > 0) {
+      setCurrentEpisodeIndex(currentEpisodeIndex - 1)  
+    }
+  }
+
   return (
     <PlayerContext.Provider value={{ episodeList, 
       currentEpisodeIndex, 
-      play, 
+      play,
+      playNext,
+      playPrevious,
       isPlaying, 
       tooglePlay, 
       setPlayingState,
