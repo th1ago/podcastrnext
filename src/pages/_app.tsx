@@ -8,7 +8,6 @@ import { PlayerContextProvider } from '../contexts/PlayerConstext';
 function MyApp({ Component, pageProps }) {
   return (
     <PlayerContextProvider>
-    <link rel="shortcut icon" href="#" />
     <div className={styles.wrapper}>
       <main>
         <Header />
